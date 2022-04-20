@@ -1,0 +1,71 @@
+// Assignment 3: Mirror Tree
+/*Problem Statement: Create Binary Search tree
+and find its mirror image. Print original & new tree level wise. 
+Find height & print leaf nodes*/
+#include <iostream>
+using namespace std;
+struct Node
+{
+    int data; 
+    Node*left; //Left pointer
+    Node*right; //Right pointr
+    Node(int x)
+    {
+        data = x; 
+        Node*left = NULL; 
+        Node*right = NULL;
+    }
+};
+
+
+// Inorder traversal of the given tree
+void inorder(Node* root)
+{
+    if (root == NULL)
+      return;
+    inorder(root->left);
+    cout <<" "<< root->data;
+    inorder(root->right);
+}
+// Address of the mirror tree. 
+void MirrorTheTree(Node* root, Node** mirror)
+{
+    // Node is null basecase
+    if (root == NULL) 
+    {
+        mirror = NULL;
+        return;
+    }
+    //New Node here for the mirror tree
+    *mirror = new Node(root->data); 
+        
+    //Calling the left and the right subtrees
+    MirrorTheTree(root->left, &((*mirror)->right));
+    MirrorTheTree(root->right, &((*mirror)->left));
+}
+int main()
+{
+    Node* tree = new Node(1);
+    
+    tree->left = new Node(2);
+    tree->right = new Node(3);
+    
+    tree->left->right = new Node(4);
+    tree->left->right->left = new Node(6);
+    tree->right->right = new Node(5);
+    
+        
+    // Inorder traversal of the input tree
+    cout <<"Inorder of the given tree: ";
+    inorder(tree);
+    Node* mirrorTree = NULL;
+    MirrorTheTree(tree, &mirrorTree);
+    
+    
+    //Inorder traversal of the mirror tree
+    cout <<"\nInorder of the mirror tree: ";
+    inorder(mirrorTree);
+    
+    
+    return 0;
+}
